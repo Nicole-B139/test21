@@ -1,0 +1,50 @@
+---
+title: "HW3"
+author: "Giselle Diaz"
+date: "2024-11-02"
+output: pdf_document
+---
+
+```{r, echo=TRUE, warning=FALSE, message=FALSE}
+
+#Install package needed to read an .xlsx file
+
+#install.packages("readxl")
+
+library(readxl)
+
+#loaded the package and its dependencies
+
+#importing the .xlsx data file and referncing it as an object called TextMessages
+
+TextMessages <- read_excel("TextMessages.xlsx")
+
+#load the necessary libraries
+
+library(ggplot2)
+
+
+TextMessages_long <- data.frame(
+  Participant = rep(TextMessages$Participant, 2),
+  Group = rep(TextMessages$Group, 2),
+  Timepoint = rep(c("Baseline", "Six_months"), each = nrow(TextMessages)),
+  TextMessages = c(TextMessages$Baseline, TextMessages$Six_months)
+)
+
+
+ggplot(TextMessages_long, aes(x = Group, y = TextMessages, fill = Timepoint)) +
+  geom_boxplot() +
+  labs(title = "Stratified Boxplot of Text Messages by Group",
+       x = "Group",
+       y = "Number of Text Messages") +
+  theme_minimal()
+
+## The boxplot allows us to compare the distribution of text messages between 
+#the two groups at different timepoints
+
+
+
+
+```
+
+
