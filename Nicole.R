@@ -17,4 +17,4 @@ round( stat.desc(Text$Six_months) , 2)
 #that participants generally scored lower at the six month point versus baseline. 
 #The first quartile is 53 meaning 25% of people sored below this value. The
 #median is the midpoint which is 60.5. Lastly, the 3rd quartile is 63, the point 
-#of where 75% of the scores fall. 
+#of where 75% of the scores fall.
