@@ -1,0 +1,78 @@
+---
+title: "FINALHW3"
+author: "Giselle Diaz"
+date: "2024-11-06"
+output: pdf_document
+---
+
+```{r, echo=TRUE, warning=FALSE, message=FALSE}
+
+
+setwd("/cloud/project")
+
+#install.packages("readxl")
+#this package is needed to read in an .xlsx file
+
+#install.packages("reshape")
+library(reshape)
+
+
+library(readxl)
+#loading the package and its dependencies
+
+TM <- read.csv("TextMessages.csv")
+#importing the csv data file and referencing it as an object called TM
+
+colnames(TM)
+long_data <- melt(TM, id.vars= c("Participant","Group"), variable.name = 
+                    "Time", value.name="Value")
+
+nrow(TM)
+#50 rows
+
+#install.packages("ggplot2")
+library(ggplot2)
+
+long_data$Group <- as.factor(long_data$Group)
+
+is.factor(long_data$Group)
+
+boxplot_TMbyGroup <- ggplot(long_data, aes(Group,value))
+
+boxplot_TMbyGroup
+
+boxplot_TMbyGroup + geom_boxplot()
+
+boxplot_TMbyGroup + geom_boxplot() + labs(x="Group", y="All Text Messages")
+
+min(TM$Baseline)
+#min is 46
+
+max(TM$Baseline)
+#max is 89
+
+boxplot_TMbyGroup + geom_boxplot() + labs(x="Group", y="value")+ 
+scale_y_continuous(limits = c(40, 90))
+
+boxplot_TMbyGroup + geom_boxplot() + labs(x="Group", y="value")+ 
+scale_y_continuous(limits = c(40, 90), breaks = seq(from =40, to = 90, by = 5))
+
+#install.packages("pastecs")
+
+library(pastecs)
+
+by(TM$Baseline, TM$Group, median)
+
+by(TM$Baseline, TM$Group, range)
+
+by(TM$Baseline, TM$Group, quantile)
+#   0% = 47  25% = 57  50% = 64  75% = 73 100% = 85
+
+
+
+
+
+
+
+```
+
