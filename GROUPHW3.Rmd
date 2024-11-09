@@ -1,0 +1,170 @@
+---
+title: "HW"
+author: "Giselle, Nicole,Edward,Nicolas"
+date: "2024-11-09"
+output: pdf_document
+---
+
+```{r, echo=TRUE, warning=FALSE, message=FALSE}
+
+setwd("/cloud/project")
+
+#install.packages("readxl")
+#this package is needed to read in an .xlsx file
+
+#install.packages("reshape")
+library(reshape)
+
+
+library(readxl)
+#loading the package and its dependencies
+
+TM <- read.csv("TextMessages.csv")
+#importing the csv data file and referencing it as an object called TM
+
+colnames(TM)
+long_data <- melt(TM, id.vars= c("Participant","Group"), variable.name = 
+                    "Time", value.name="Value")
+
+nrow(TM)
+#50 rows
+
+#install.packages("ggplot2")
+library(ggplot2)
+
+long_data$Group <- as.factor(long_data$Group)
+
+is.factor(long_data$Group)
+
+boxplot_TMbyGroup <- ggplot(long_data, aes(Group,value))
+
+boxplot_TMbyGroup
+
+boxplot_TMbyGroup + geom_boxplot()
+
+boxplot_TMbyGroup + geom_boxplot() + labs(x="Group", y="All Text Messages")
+
+min(TM$Baseline)
+#min is 46
+
+max(TM$Baseline)
+#max is 89
+
+boxplot_TMbyGroup + geom_boxplot() + labs(x="Group", y="value")+ 
+scale_y_continuous(limits = c(40, 90))
+
+boxplot_TMbyGroup + geom_boxplot() + labs(x="Group", y="value")+ 
+scale_y_continuous(limits = c(40, 90), breaks = seq(from =40, to = 90, by = 5))
+
+#install.packages("pastecs")
+
+library(pastecs)
+
+by(TM$Baseline, TM$Group, median)
+
+by(TM$Baseline, TM$Group, range)
+
+by(TM$Baseline, TM$Group, quantile)
+#   0% = 47  25% = 57  50% = 64  75% = 73 100% = 85
+
+
+# Install and load required packages
+#install.packages("reshape2")
+#install.packages("ggplot2")
+
+library(reshape2)
+library(ggplot2)
+
+
+# Reshaping the data to long format
+long_data <- melt(TM, id.vars= c("Participant","Group"), variable.name = "Time",
+value.name="Value")
+
+# Removing rows with missing values to avoid errors
+long_data <- long_data[!is.na(long_data$Value), ]
+
+# Converting Group and Time to factors
+long_data$Group <- as.factor(long_data$Group)
+long_data$Time <- as.factor(long_data$Time)
+
+# Creating a stratified bar chart of text messages by Time
+bar_chart_TMbyTime <- ggplot(long_data, aes(x = Time, y = Value, fill = Group)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(x = "Time", y = "Number of Text Messages", title = "Stratified Bar Chart
+  of Text Messages by Time and Group") +
+  theme_minimal()
+
+# Display the bar chart
+bar_chart_TMbyTime
+
+# Check if Group is a factor and convert if necessary
+is.factor(TM$Group)
+TM$Group <- as.factor(TM$Group)
+
+# Check if Baseline is numeric
+is.numeric(TM$Baseline)
+
+# Statistical descriptions by group
+by(TM$Baseline, TM$Group, stat.desc)
+by(TM$Baseline, TM$Group, median)
+by(TM$Baseline, TM$Group, range)
+by(TM$Baseline, TM$Group, quantile)
+
+
+# Based on the statistical descriptions by group, we can infer that there are 
+# slight differences between Group 1 and Group 2 in terms of the baseline text messages. 
+# Group 1 has a mean baseline of 64, with a standard deviation of 10.67, 
+# and a median of 64, indicating that the values are relatively centered 
+# around the mean. 
+# Group 2 has a slightly higher mean baseline of 65.6, with a standard deviation
+# of 10.83, and a median of 65, suggesting a similar but slightly more spread 
+#distribution compared to Group 1.
+#The quantile analysis also indicates that both groups have similar ranges, 
+# with Group 2 showing slightly higher values overall. This suggests that 
+#while both groups are comparable, Group 2 tends to have slightly higher 
+#baseline text message counts.
+
+names(TM)
+is.factor(TM$Six_months)
+#install.packages("pastecs")
+library(pastecs)
+round( stat.desc(TM$Baseline) , 2)
+round( stat.desc(TM$Six_months) , 2)
+#from this given data set we can determine that their
+#are 50 participants. The mean is 57.4. It is lower than the baseline mean at
+#65.22, which indicates a decline from baseline to sixmonths. The standard 
+#deviation is 13.93 which shows that there is variability among the participants 
+#six month scores. The min value is 9 showing that a least one person scored 
+#very low.The max score is 79, which is lower than baseline of 89. This shows 
+#that participants generally scored lower at the six month point versus baseline. 
+#The first quartile is 53 meaning 25% of people scored below this value. The
+#median is the midpoint which is 60.5. Lastly, the 3rd quartile is 63, the point 
+#of where 75% of the scores fall.
+stats_list <- lapply(TM[, c("Baseline", "Six_months")], function(x) 
+stat.desc(x, basic = TRUE, desc = TRUE, norm = TRUE))
+combined_stats <- do.call(cbind, stats_list)  
+colnames(combined_stats) <- c("Baseline", "Six_Months")                             
+combined_stats <- round(combined_stats, 2)
+print(combined_stats)
+#The purpose of the code above is to get a clearer look of the stats side by
+#side. We can note some significant differences as stated above.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+knitr::opts_chunk$set(echo = TRUE)
+```
+
